@@ -6,36 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homework 3</title>
-    <style>
-        .product-box {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-        }
-        
-        .product {
-            border: 1px solid black;
-            width: 400px;
-        }
-    </style>
 </head>
 
 <body>
     <div id="app">
         <h1>Сортировка статей по тэгам</h1>
-        <input type="checkbox" id="check1" value="1" v-model="categories">
-        <label for="check1">Kitchen</label>
-        <input type="checkbox" id="check2" value="2" v-model="categories">
-        <label for="check2">Bedroom</label>
-        <input type="checkbox" id="check3" value="3" v-model="categories">
-        <label for="check3">Building</label>
-        <input type="checkbox" id="check4" value="4" v-model="categories">
-        <label for="check4">Architecture</label>
-        <input type="checkbox" id="check5" value="5" v-model="categories">
-        <label for="check5">Kitchen planning</label>
-        <hr>
-        <div class="product-box">
-            <product class="product" v-for="product in filteredData" :key="product.id" :product="product"></product>
+        <button v-for="button in buttons" :key="button.id" @click="sortByTag">{{ button.name }}</button>
+        <div>
+            <product v-for="product in filteredProducts" :key="product.id" :product="product"></product>
         </div>
     </div>
 
@@ -45,89 +23,113 @@
     <script>
         new Vue({
             el: '#app',
+            sortedProducts: [],
             data: {
-                categories: [],
-                products: [{
+                buttons: [{
                     id: 1,
-                    name: 'Kitchen design',
-                    image: 'product1.jpg',
-                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '1'
+                    name: 'Kitchen',
+                    tagname: 'Kitchen'
                 }, {
                     id: 2,
-                    name: 'Bedroom design better',
-                    image: 'product1.jpg',
-                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '2'
+                    name: 'Bedroom',
+                    tagname: 'Bedroom'
                 }, {
                     id: 3,
+                    name: 'Building',
+                    tagname: 'Building'
+                }, {
+                    id: 4,
+                    name: 'Architecture',
+                    tagname: 'Architecture'
+                }, {
+                    id: 5,
+                    name: 'Kitchen Planning',
+                    tagname: 'Kitchen Planning'
+                }, ],
+                products: [{
+                    id: 6,
                     name: 'Kitchen design',
                     image: 'product1.jpg',
                     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '1'
+                    tag: 'Kitchen'
                 }, {
-                    id: 4,
-                    name: 'Buildings design the best',
-                    image: 'product1.jpg',
-                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '3'
-                }, {
-                    id: 5,
+                    id: 7,
                     name: 'Bedroom design better',
                     image: 'product1.jpg',
                     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '2'
+                    tag: 'Bedroom'
                 }, {
-                    id: 6,
+                    id: 8,
+                    name: 'Kitchen design',
+                    image: 'product1.jpg',
+                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
+                    tag: 'Kitchen'
+                }, {
+                    id: 9,
                     name: 'Buildings design the best',
                     image: 'product1.jpg',
                     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '3'
-                }, {
-                    id: 7,
-                    name: 'New Architecture',
-                    image: 'product1.jpg',
-                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '4'
-                }, {
-                    id: 8,
-                    name: 'Kitchen planning design',
-                    image: 'product1.jpg',
-                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '5'
-                }, {
-                    id: 9,
-                    name: 'New Architecture',
-                    image: 'product1.jpg',
-                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '4'
+                    tag: 'Building'
                 }, {
                     id: 10,
                     name: 'Bedroom design better',
                     image: 'product1.jpg',
                     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '2'
+                    tag: 'Bedroom'
                 }, {
                     id: 11,
+                    name: 'Buildings design the best',
+                    image: 'product1.jpg',
+                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
+                    tag: 'Building'
+                }, {
+                    id: 12,
+                    name: 'New Architecture',
+                    image: 'product1.jpg',
+                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
+                    tag: 'Architecture'
+                }, {
+                    id: 13,
                     name: 'Kitchen planning design',
                     image: 'product1.jpg',
                     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
-                    category: '5'
+                    tag: 'Kitchen Planning'
+                }, {
+                    id: 14,
+                    name: 'New Architecture',
+                    image: 'product1.jpg',
+                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
+                    tag: 'Architecture'
+                }, {
+                    id: 15,
+                    name: 'Bedroom design better',
+                    image: 'product1.jpg',
+                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
+                    tag: 'Bedroom'
+                }, {
+                    id: 16,
+                    name: 'Kitchen planning design',
+                    image: 'product1.jpg',
+                    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis harum odit mollitia facere porro adipisci eos! Quae natus perferendis doloremque.',
+                    tag: 'Kitchen Planning'
                 }]
             },
             computed: {
-                filteredData() {
-                    let data = []
-                    if (this.categories.length) {
-                        data = this.products.filter(x => this.categories.indexOf(x.category.toString()) != -1)
+                filteredProducts() {
+                    if (sortedProducts.length) {
+                        return sortedProducts;
                     } else {
-                        data = this.products
+                        return this.products;
                     }
-                    return data
                 }
             },
             methods: {
-
+                sortByTag(tag) {
+                    this.sortedProducts = [];
+                    this.products.map(function(item) {
+                        return sortedProducts;
+                    })
+                }
             }
         });
     </script>
